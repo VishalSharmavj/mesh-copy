@@ -19,16 +19,12 @@
   "weight_decay": 0.1,
   "total_steps": 350000,
 
-  "tpu_size": 256,
+  "tpu_size": 8,
 
-  "bucket": "neo-models",
-  "model_dir": "mesh_jax_pile_6B_rotary",
+  "bucket": "6b-training",
+  "model_dir": "final-checkpoints",
 
-  "train_set": "pile.train.index",
-  "val_set": {
-    "pile": "pile.val.index",
-    "owt": "openwebtext2_new_inputs.val.index"
-  },
+  "train_set": "example.train.index",
 
   "eval_harness_tasks": [
     "lambada",
@@ -39,12 +35,12 @@
     "pubmedqa"
   ],
 
-  "val_batches": 100,
+  "val_batches": 209,
   "val_every": 500,
   "ckpt_every": 500,
   "keep_every": 10000,
 
-  "name": "GPT3_6B_pile_rotary",
+  "name": "GPT3_6B",
   "wandb_project": "mesh-transformer-jax",
   "comment": ""
 }
