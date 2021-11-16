@@ -17,7 +17,7 @@ from mesh_transformer.util import clip_by_global_norm, to_bf16, to_f16
 def parse_args():
     # Parse command line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument("--config", type=str, default=None, help="Config file location")
+    parser.add_argument("--config", type=str, default="configs/example.json", help="Config file location")
     parser.add_argument("--ckpt-step", type=int, default=-1, help="Step number of the checkpoint to convert (if not specified, converts the most recent checkpoint)")
     parser.add_argument("--f16", default=False, action="store_true", help="Convert to float16 (instead of bfloat16)")
 
