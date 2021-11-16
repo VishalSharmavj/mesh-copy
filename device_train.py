@@ -39,8 +39,8 @@ def parse_args():
         - save their GCS paths to a index file under `data/`, see existing files for examples
     """,
     formatter_class=argparse.RawTextHelpFormatter)
-    parser.add_argument("--config", type=str, default=None, help="Config file location")
-    parser.add_argument("--tune-model-path", type=str, default=None, help="Base model to finetune")
+    parser.add_argument("--config", type=str, default="configs/example.json", help="Config file location")
+    parser.add_argument("--tune-model-path", type=str, default="gs://6b-training/step_383500/", help="Base model to finetune")
     parser.add_argument("--fresh-opt", default=False, action="store_true", help="Use a newly initialized optimizer, ignoring any optimizer state saved in the base checkpoint")
 
     args = parser.parse_args()
