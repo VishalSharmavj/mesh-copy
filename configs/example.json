@@ -25,6 +25,7 @@
   "model_dir": "final-checkpoints",
 
   "train_set": "example.train.index",
+  "val_set": "example.val.index",
 
   "eval_harness_tasks": [
     "lambada",
@@ -35,7 +36,7 @@
     "pubmedqa"
   ],
 
-  "val_batches": 209,
+  "val_batches": 8,
   "val_every": 500,
   "ckpt_every": 500,
   "keep_every": 10000,
