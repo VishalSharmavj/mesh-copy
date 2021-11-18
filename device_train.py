@@ -242,13 +242,6 @@ if __name__ == "__main__":
 
     global_val_batch = per_replica_batch * tpu_size // cores_per_replica
 
-    val_sets = {}
-
-    for k, v in params["val_set"].items():
-        val_sets[k] = TFRecordNewInputs(
-            f"data/{v}", batch_size=(global_val_batch,), sample_size=seq
-        )
-
     # tok/sec metrics
     sequences_per_step = gradient_accumulation_steps * (per_replica_batch * tpu_size // cores_per_replica)
     tokens_per_step = params['seq'] * sequences_per_step
@@ -283,13 +276,6 @@ if __name__ == "__main__":
         step += 1
         print(f"Train fn compiled in {time.time() - start:.06}s")
 
-        print('compiling eval fn')
-        start = time.time()
-        for val_set in val_sets.values():
-            eval_step(network, val_set.get_samples())
-            val_set.reset()
-        print(f"Eval fn compiled in {time.time() - start:.06}s")
-
         project = params.get("wandb_project", "mesh-transformer-jax")
         wandb.init(project=project, name=params["name"], config=params)
 
@@ -304,20 +290,6 @@ if __name__ == "__main__":
                      aux={"train_loader": train_dataset.get_state()},
                      delete_old=True,
                      )
-
-            if step % val_every == 1:  # 1 because we've already taken a step to compile train fn
-                for name, val_set in val_sets.items():
-                    val_loss = []
-                    for i, _ in tqdm(zip(val_set.sample_once(), range(val_batches)),
-                                     desc=f"validation for step {step}, set {name}",
-                                     total=val_batches):
-                        val_loss.append(eval_step(network, i))
-                    val_set.reset()
-
-                    val_loss = np.array(val_loss).mean()
-                    print(f"validation loss for step {step}, set {name}: {val_loss}")
-
-                    wandb.log({f'val/loss_{name}': float(val_loss)}, step)
 
             if step == total_steps:
                 print("training completed!")
